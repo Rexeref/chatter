@@ -5,8 +5,6 @@ const ip = "127.0.0.1";
 let numClienti = 0;
 const users = [];
 
-// MODIFICA DI TEST
-
 function requestHandler(request, response) {
     fs.readFile('index.html', function (error, data) {
         if (error) {
