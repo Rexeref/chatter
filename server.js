@@ -47,7 +47,7 @@ function requestHandler(req, res) {
             res.write(content, 'utf-8');
         }
         res.end();
-        
+
     });
 
 }
@@ -59,6 +59,9 @@ const server = http.createServer(requestHandler);
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
 });
+
+//
+// socket handler
 
 const io = require("socket.io")(server, {
     cors: {
@@ -73,7 +76,7 @@ const io = require("socket.io")(server, {
 io.sockets.on('connection', 
     function (socket) {
 
-        socket.on('join', function (nickname) {
+        socket.on('join', function (nickname) { // socket.on( metodo, function (datiRecuperati) {codice in caso;});
             socket.nickname = nickname;
             users.push({ id: socket.id, nickname: nickname });
             console.log('Cliente connesso:', socket.id, 'con nickname:', nickname);
