@@ -6,6 +6,7 @@ const path = require("path");
 let numClienti = 0;
 const users = [];
 
+//______________FUNZIONE PER CARICARE LE RISORSE STATICHE_____________
 function requestHandler(req, res) {
     let filePath = '.' + req.url;
 
@@ -50,8 +51,10 @@ function requestHandler(req, res) {
     });
 
 }
+const server = http.createServer(requestHandler); 
 
-const server = http.createServer(requestHandler);
+//_______________________________________________________________________
+
 
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
@@ -63,6 +66,9 @@ const io = require("socket.io")(server, {
         methods: ["GET", "POST"]
     }
 });
+
+//_______________________________________________________________________
+
 
 io.sockets.on('connection', 
     function (socket) {
@@ -76,12 +82,20 @@ io.sockets.on('connection',
             io.emit('stato', users);
         });
 
+
+//_______________________________________________________________________
+
         socket.on('privateMessage', function (data) {
             const recipientSocket = users.find(user => user.id === data.recipient);
             if (recipientSocket) {
                 io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
             }
         });
+
+
+//_______________________________________________________________________
+
+
 
         socket.on('disconnect', function () {
             numClienti--;
