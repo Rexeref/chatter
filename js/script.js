@@ -27,6 +27,8 @@ function sendMessage() {
     const nickname = document.getElementById("Nickname").value;
     const selectedClient = document.getElementById("connectedClients").value;
 
+    // Errori vari in caso di mancata selezione di qualcosa
+    
     if (selectedClient === '') {
         alert("Seleziona un cliente per avviare la chat.");
         return;
