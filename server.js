@@ -14,7 +14,7 @@ function requestHandler(req, res) {
     }
 
     const extname = path.extname(filePath);
-    console.log(extname);
+    //console.log(extname);
     let contentType
 
     switch (extname) {
@@ -46,7 +46,9 @@ function requestHandler(req, res) {
             res.write(content, 'utf-8');
         }
         res.end();
+        
     });
+
 }
 
 const server = http.createServer(requestHandler);
@@ -62,27 +64,30 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.sockets.on('connection', function (socket) {
-    socket.on('join', function (nickname) {
-        socket.nickname = nickname;
-        users.push({ id: socket.id, nickname: nickname });
-        console.log('Cliente connesso:', socket.id, 'con nickname:', nickname);
-        numClienti++;
-        socket.emit('connesso', ip + " porta: " + port);
-        io.emit('stato', users);
-    });
+io.sockets.on('connection', 
+    function (socket) {
 
-    socket.on('privateMessage', function (data) {
-        const recipientSocket = users.find(user => user.id === data.recipient);
-        if (recipientSocket) {
-            io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
-        }
-    });
+        socket.on('join', function (nickname) {
+            socket.nickname = nickname;
+            users.push({ id: socket.id, nickname: nickname });
+            console.log('Cliente connesso:', socket.id, 'con nickname:', nickname);
+            numClienti++;
+            socket.emit('connesso', ip + " porta: " + port);
+            io.emit('stato', users);
+        });
 
-    socket.on('disconnect', function () {
-        numClienti--;
-        console.log('Cliente disconnesso:', socket.id);
-        users.splice(users.findIndex(user => user.id === socket.id), 1);
-        io.emit('stato', users);
+        socket.on('privateMessage', function (data) {
+            const recipientSocket = users.find(user => user.id === data.recipient);
+            if (recipientSocket) {
+                io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
+            }
+        });
+
+        socket.on('disconnect', function () {
+            numClienti--;
+            console.log('Cliente disconnesso:', socket.id);
+            users.splice(users.findIndex(user => user.id === socket.id), 1);
+            io.emit('stato', users);
+        });
+
     });
-});
