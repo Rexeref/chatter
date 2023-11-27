@@ -1,0 +1,11 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "description": "Compito fatto in node da Vincenzo Nikodem Cesqui Podiani e Volpi Gabriele",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
