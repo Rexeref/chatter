@@ -2,18 +2,50 @@ const http = require('http');
 const fs = require('fs');
 const port = 3000;
 const ip = "127.0.0.1";
+const path = require("path");
 let numClienti = 0;
 const users = [];
 
-function requestHandler(request, response) {
-    fs.readFile('index.html', function (error, data) {
+function requestHandler(req, res) {
+    let filePath = '.' + req.url;
+
+    if (filePath === './') {
+        filePath = './index.html';
+    }
+
+    const extname = path.extname(filePath);
+    console.log(extname);
+    let contentType
+
+    switch (extname) {
+        case '.html':
+            contentType = 'text/html';
+            break;
+        case '.js':
+            contentType = 'text/javascript';
+            break;
+        case '.css':
+            contentType = 'text/css';
+            break;
+        case '.png':
+            contentType = 'image/png';
+            break;
+        case '.gif':
+            contentType = 'image/gif';
+            break;
+    }    
+
+    fs.readFile(filePath, function (error, content) {
+    
         if (error) {
-            response.writeHead(404);
-        } else {
-            response.writeHead(200, { "content-Type": "text/html" });
-            response.write(data, "utf8");
+            res.writeHead(404);
         }
-        response.end();
+
+        else {
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.write(content, 'utf-8');
+        }
+        res.end();
     });
 }
 
