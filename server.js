@@ -6,7 +6,9 @@ const path = require("path");
 let numClienti = 0;
 const users = [];
 
-//______________FUNZIONE PER CARICARE LE RISORSE STATICHE_____________
+//
+// http request handler
+
 function requestHandler(req, res) {
     let filePath = '.' + req.url;
 
@@ -51,10 +53,8 @@ function requestHandler(req, res) {
     });
 
 }
-const server = http.createServer(requestHandler); 
 
-//_______________________________________________________________________
-
+const server = http.createServer(requestHandler);
 
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
@@ -70,9 +70,6 @@ const io = require("socket.io")(server, {
     }
 });
 
-//_______________________________________________________________________
-
-
 io.sockets.on('connection', 
     function (socket) {
 
@@ -81,12 +78,9 @@ io.sockets.on('connection',
             users.push({ id: socket.id, nickname: nickname });
             console.log('Cliente connesso:', socket.id, 'con nickname:', nickname);
             numClienti++;
-            socket.emit('connesso', ip + " porta: " + port);
-            io.emit('stato', users);
+            socket.emit('connesso', ip + " porta: " + port); // Invio dati al socket singolo
+            io.emit('stato', users); // Invio 
         });
-
-
-//_______________________________________________________________________
 
         socket.on('privateMessage', function (data) {
             const recipientSocket = users.find(user => user.id === data.recipient);
@@ -94,11 +88,6 @@ io.sockets.on('connection',
                 io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
             }
         });
-
-
-//_______________________________________________________________________
-
-
 
         socket.on('disconnect', function () {
             numClienti--;
