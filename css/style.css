@@ -14,8 +14,8 @@ body, html {
 }
 
 .chat-container {
-    width: 80%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 1000px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -44,13 +44,19 @@ header {
     font-size: 18px;
 }
 
+.sidebarRight {
+    flex: 1;
+    padding: 20px;
+}
+
 .main-chat {
     flex: 3;
     border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 .chat-area {
-    width: 100%;
+    width: 96.5%;
     height: 300px;
     padding: 10px;
     overflow-y: auto;
