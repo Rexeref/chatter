@@ -90,6 +90,10 @@ io.sockets.on('connection',
             console.log('è stata creata la room ' + createdRoomsNumber +' da ' + socket.id);
         });
 
+        socket.on('addUserToRoom', function (user) {
+            
+        });
+
         // Creare le funzioni per aggiungere utenti, cambiare room in cui scrivere, ecc...
         // Eliminare il vecchio sistema dove tutto viene buttato nella stessa textArea e
         // salvare i dati delle chat (stringhe) nell'apposita variabile della room "timeline"

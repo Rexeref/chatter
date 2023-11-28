@@ -8,34 +8,43 @@
 <body>
     <div class="full-screen-container">
         <div class="chat-container">
+
             <header>
                 <h1>Chat Room</h1>
             </header> 
+
             <div class="chat-content">
-                <div class="sidebar">
+
+                <div id="sidebarLeft" class="sidebar hidden">
                     <h2 id="showName"></h2>
                     <h4>Clienti connessi in chat:</h4>
                     <select id="connectedClients" name="connectedClients">
                     </select>
-                    <button onclick="createRoom()" id="createRoom" hidden>Crea nuova Room</button>
+                    <button onclick="createRoom()" id="createRoom">Crea nuova Room</button>
                 </div>
-                <div class="main-chat">
+
+                <div id="login-div" class="input-section">
+                    <input type="text" id="Nickname" name="Nickname" placeholder="Nickname">
+                    <button onclick="login()" id="login">Login</button>
+                </div>
+
+                <div id="main-chat" class="main-chat hidden">
                     <div class="chat-area" id="chatArea" disabled></div>
                     <div class="input-section">
-                        <input type="text" id="Nickname" name="Nickname" placeholder="Nickname">
-                        <button onclick="login()" id="login">Login</button>
-                        <button onclick="endChat()" id="logout" hidden>Logout</button>
-                        <input type="text" id="message" name="message" placeholder="Messaggio" hidden>
-                        <button onclick="sendMessage()" id="sendMessage" hidden>Invia</button>
+                        <button onclick="endChat()" id="logout">Logout</button>
+                        <input type="text" id="message" name="message" placeholder="Messaggio">
+                        <button onclick="sendMessage()" id="sendMessage">Invia</button>
                     </div>
                 </div>
-                <div class="sidebarRight">
-                    <h4>Room name:</h4>
+
+                <div id="sidebarRight" class="sidebar hidden">
+                    <h4 id="roomName"></h4>
                     <select id="roomClients" name="roomClients">
-                        <option hidden>connessi:</option>
                     </select>
                 </div>
+
             </div>
+
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>

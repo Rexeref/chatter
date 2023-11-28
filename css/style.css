@@ -25,7 +25,7 @@ body, html {
 header {
     background-color: #3498db;
     color: #fff;
-    padding: 20px;
+    padding: 15px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
@@ -36,17 +36,12 @@ header {
 
 .sidebar {
     flex: 1;
-    padding: 20px;
+    padding: 15px;
 }
 
 .sidebar h2 {
     margin-bottom: 10px;
     font-size: 18px;
-}
-
-.sidebarRight {
-    flex: 1;
-    padding: 20px;
 }
 
 .main-chat {
@@ -90,6 +85,10 @@ button {
 
 button:hover {
     background-color: #2980b9;
+}
+
+.hidden {
+    display: none;
 }
 
 #createRoom {

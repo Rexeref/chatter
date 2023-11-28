@@ -24,13 +24,9 @@ socket.on("stato", function (data) {
 
 function login() {
     let nameUser = document.getElementById("Nickname").value;
-    document.getElementById("Nickname").hidden = true;
-    document.getElementById("login").hidden = true;
-    document.getElementById("logout").hidden = false;
-    document.getElementById("message").hidden = false;
-    document.getElementById("sendMessage").hidden = false;
-    document.getElementById("showName").hidden = false;
-    document.getElementById("createRoom").hidden = false;
+    document.getElementById("main-chat").classList.remove("hidden");
+    document.getElementById("sidebarLeft").classList.remove("hidden");
+    document.getElementById("login-div").classList.add("hidden");
     document.getElementById("showName").innerHTML = "Hey " + nameUser + "!";
     socket.emit('join', nameUser);
     console.log(socket);
@@ -71,13 +67,9 @@ function sendMessage() {
 
 function endChat() {
     socket.disconnect();
-    document.getElementById("Nickname").hidden = false;
-    document.getElementById("login").hidden = false;
-    document.getElementById("logout").hidden = true;
-    document.getElementById("message").hidden = true;
-    document.getElementById("sendMessage").hidden = true;
-    document.getElementById("showName").hidden = true;
-    document.getElementById("createRoom").hidden = true;
+    document.getElementById("main-chat").classList.add("hidden");
+    document.getElementById("sidebarLeft").classList.add("hidden");
+    document.getElementById("login-div").classList.remove("hidden");
     document.getElementById("connectedClients").innerHTML = "";
     document.getElementById("message").value = "";
     document.getElementById("chatArea").innerText = "";
