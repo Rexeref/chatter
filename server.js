@@ -5,6 +5,8 @@ const ip = "127.0.0.1";
 const path = require("path");
 let numClienti = 0;
 const users = [];
+let createdRoomsNumber = 0;
+const rooms = [];
 
 //
 // http request handler
@@ -81,6 +83,17 @@ io.sockets.on('connection',
             socket.emit('connesso', ip + " porta: " + port); // Invio dati al socket singolo
             io.emit('stato', users); // Invio 
         });
+
+        socket.on('createRoom', function (roomName) {
+            createdRoomsNumber++;
+            rooms.push({ name: roomName, id: createdRoomsNumber, admin: socket.id, users: [socket.id], timeline: "Ecco a te la tua nuova Room!\n"});
+            console.log('è stata creata la room ' + createdRoomsNumber +' da ' + socket.id);
+        });
+
+        // Creare le funzioni per aggiungere utenti, cambiare room in cui scrivere, ecc...
+        // Eliminare il vecchio sistema dove tutto viene buttato nella stessa textArea e
+        // salvare i dati delle chat (stringhe) nell'apposita variabile della room "timeline"
+        // per vedere com'é strutturata la room vai a riga 89
 
         socket.on('privateMessage', function (data) {
             const recipientSocket = users.find(user => user.id === data.recipient);

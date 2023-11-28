@@ -71,7 +71,8 @@ header {
     border: 1px solid #ccc;
 }
 
-.input-section button {
+button {
+    margin-right: 8px;
     padding: 8px 15px;
     border: none;
     border-radius: 4px;
@@ -81,6 +82,11 @@ header {
     transition: background-color 0.3s ease;
 }
 
-.input-section button:hover {
+button:hover {
     background-color: #2980b9;
+}
+
+#createRoom {
+    width: 100%;
+    margin-top: 100%;
 }

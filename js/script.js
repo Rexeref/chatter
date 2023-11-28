@@ -30,9 +30,15 @@ function login() {
     document.getElementById("message").hidden = false;
     document.getElementById("sendMessage").hidden = false;
     document.getElementById("showName").hidden = false;
+    document.getElementById("createRoom").hidden = false;
     document.getElementById("showName").innerHTML = "Hey " + nameUser + "!";
     socket.emit('join', nameUser);
     console.log(socket);
+}
+
+function createRoom() {
+    const chatRoomName = "La Chatroom di " + document.getElementById("Nickname").value;
+    socket.emit('createRoom', chatRoomName);
 }
 
 function sendMessage() {
@@ -71,6 +77,7 @@ function endChat() {
     document.getElementById("message").hidden = true;
     document.getElementById("sendMessage").hidden = true;
     document.getElementById("showName").hidden = true;
+    document.getElementById("createRoom").hidden = true;
     document.getElementById("connectedClients").innerHTML = "";
     document.getElementById("message").value = "";
     document.getElementById("chatArea").innerText = "";
