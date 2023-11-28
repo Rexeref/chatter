@@ -59,7 +59,7 @@ function requestHandler(req, res) {
 const server = http.createServer(requestHandler);
 
 server.listen(port, ip, function () {
-    console.log("Server started on " + ip + ":" + port);
+    console.log("Server started on       " + ip + ":" + port);
 });
 
 //
@@ -78,9 +78,9 @@ io.sockets.on('connection',
         socket.on('join', function (nickname) { // socket.on( metodo, function (datiRecuperati) {codice in caso;});
             socket.nickname = nickname;
             users.push({ id: socket.id, nickname: nickname });
-            console.log('Cliente connesso:', socket.id, 'con nickname:', nickname);
+            console.log(socket.id + '    ha scelto come nickname   ' + nickname);
             numClienti++;
-            socket.emit('connesso', ip + " porta: " + port); // Invio dati al socket singolo
+            socket.emit('connesso', ip + ":" + port); // Invio dati al socket singolo
             io.emit('stato', users); // Invio 
         });
 
@@ -93,9 +93,15 @@ io.sockets.on('connection',
                 timeline: "Ecco a te la tua nuova Room!"
             }
             rooms.push(roomData);
-            console.log('Room ' + roomData.id +' creata da client ' + socket.id);
+            console.log(socket.id + '    ha creato room            ' + roomData.id);
             io.to(socket.id).emit("newRoom", roomData);
-            console.log(">>> Nome Stanza [" + rooms[0].name + "], ID Stanza [" + rooms[0].id + "], ID Utente Admin [" + rooms[0].admin.id + "], ID Primo Utente Room [" + rooms[0].users[0].id + "], Testo Timeline [" + rooms[0].timeline + "] <<<")
+            //console.log(">>> Nome Stanza [" + rooms[0].name + "], ID Stanza [" + rooms[0].id + "], ID Utente Admin [" + rooms[0].admin.id + "], ID Primo Utente Room [" + rooms[0].users[0].id + "], Testo Timeline [" + rooms[0].timeline + "] <<<")
+        });
+
+        socket.on('getRoomData', function (roomId){
+            const myRoom = rooms.find(room => room.id === roomId);
+            console.log(socket.id + "    chiesto dati room         " + myRoom.id);
+            io.to(socket.id).emit("getRoomData", myRoom);
         });
 
         // Creare le funzioni per aggiungere utenti, cambiare room in cui scrivere, ecc...
@@ -112,7 +118,7 @@ io.sockets.on('connection',
 
         socket.on('disconnect', function () {
             numClienti--;
-            console.log('Cliente disconnesso:', socket.id);
+            console.log(socket.id + "    si è disconnesso");
             users.splice(users.findIndex(user => user.id === socket.id), 1);
             io.emit('stato', users);
         });

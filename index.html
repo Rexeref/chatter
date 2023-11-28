@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Chat Room</title>
+    <title>Chatter</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -12,13 +12,14 @@
         <div class="chat-container">
 
             <header>
-                <h1>Chat Room</h1>
+                <h1>Chatter</h1>
             </header>
             
             <div class="chat-content">
 
                 <div id="sidebarLeft" class="sidebar hidden">
                     <h2 id="showName"></h2>
+                    <p id="inizio"></p>
                     <div id="roomList">
                     </div>
                     <button onclick="createRoom()" id="createRoom">Crea nuova Room</button>
@@ -40,9 +41,11 @@
 
                 <div id="sidebarRight" class="sidebar hidden">
                     <h4 id="roomName"></h4>
-                    <select id="connectedClients" name="connectedClients">
-                    </select>
                     <div id="roomClients" name="roomClients">
+                    </div>
+                    <div id="editRoom">
+                        <select id="connectedClients" name="connectedClients"></select>
+                        <button>Add user to room WIP</button>
                     </div>
                 </div>
 

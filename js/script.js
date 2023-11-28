@@ -1,9 +1,10 @@
 // script.js
 
 const socket = io.connect('http://127.0.0.1:3000/');
+let activeRoom = null;
 
 socket.on("connesso", function (data) {
-    document.getElementById("inizio").innerHTML = "Chat Server in ascolto su IP: " + data;
+    document.getElementById("inizio").innerHTML = "Sei connesso al server " + data;
 });
 
 socket.on("messaggio", function (data) {
@@ -27,10 +28,20 @@ socket.on("newRoom", function (roomData) {
     // Creo il bottone collegato alla room
     const newBt = document.createElement("button");
     newBt.innerHTML = roomData.name;
-    newBt.onclick = function() {
-        openRoom(roomData.id);
-    };
+    newBt.setAttribute("onclick", "openRoom('" + roomData.id + "')");
     document.getElementById("roomList").appendChild(newBt);
+});
+
+socket.on("getRoomData", function (roomData) {
+    console.log("Ricevuti i dati della chatroom " + roomData.id);
+    activeRoom = roomData;
+    document.getElementById("chatArea").innerText = roomData.timeline;
+    document.getElementById("roomName").innerText = roomData.name;
+    document.getElementById("roomClients").innerText = "Admin: " + roomData.admin.name;
+    roomData.users.forEach(user => {
+        document.getElementById("roomClients").innerText += "\n - " + user.name;
+    });
+    document.getElementById("sidebarRight").classList.remove("hidden");
 });
 
 function login() {
@@ -46,6 +57,10 @@ function login() {
 function createRoom() {
     const data = "La Chatroom di " + document.getElementById("Nickname").value;
     socket.emit('createRoom', data);
+}
+
+function openRoom(roomId){
+    socket.emit('getRoomData', roomId);
 }
 
 function sendMessage() {
@@ -72,7 +87,7 @@ function sendMessage() {
     };
 
     socket.emit("privateMessage", data);
-    document.getElementById("chatArea").innerText += nickname + ": " + message + "\n";
+    document.getElementById("chatArea").innerText += "\n" + nickname + ": " + message;
     document.getElementById("message").value = "";
 }
 
