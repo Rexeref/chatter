@@ -27,8 +27,10 @@ socket.on("newRoom", function (roomData) {
     // Creo il bottone collegato alla room
     const newBt = document.createElement("button");
     newBt.innerHTML = roomData.name;
-    newBt.onclick = "openRoom(" + roomData.id + ")";
-    document.getElementById("roomList").add(newBt);
+    newBt.onclick = function() {
+        openRoom(roomData.id);
+    };
+    document.getElementById("roomList").appendChild(newBt);
 });
 
 function login() {

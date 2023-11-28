@@ -56,7 +56,7 @@ header {
     width: 96.5%;
     height: 300px;
     padding: 10px;
-    overflow-y: auto;
+    overflow-y: scroll;
     border-bottom: 1px solid #ddd;
 }
 
@@ -93,14 +93,21 @@ button:hover {
     display: none;
 }
 
-#createRoom {
-    width: 100%;
-    margin-top: 100%;
-}
-
 #roomList {
     overflow-y: scroll;
-    overflow-x: auto;
+    display: flex;
+    flex-flow: column;
+    height: 300px;
+    max-height: 300px;
+}
+
+#roomList button {
+    margin: 8px 8px 8px 8px;
+}
+
+#createRoom {
+    margin-left: 10%;
+    width: 80%;
 }
 
 footer{

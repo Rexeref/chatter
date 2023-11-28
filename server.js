@@ -88,14 +88,15 @@ io.sockets.on('connection',
             const recipientSocket = users.find(user => user.id === data.recipient);
             const roomData = {
                 name: data.roomName,
-                id: uuidv4(),
+                id: uuidv4(), // qui avviene la generazione del codice univoco
                 admin: recipientSocket,
                 users: [recipientSocket],
-                timeline: "Ecco a te la tua nuova Room!\n"
+                timeline: "Ecco a te la tua nuova Room!"
             }
             rooms.push(roomData);
             console.log('Room ' + roomData.id +' creata da client ' + socket.id);
             io.to(recipientSocket.id).emit("newRoom", roomData);
+            //console.log(">>> Nome Stanza [" + rooms[0].name + "], ID Stanza [" + rooms[0].id + "], ID Utente Admin [" + rooms[0].admin.id + "], ID Primo Utente Room [" + rooms[0].users[0].id + "], Testo Timeline [" + rooms[0].timeline + "] <<<")
         });
 
         // Creare le funzioni per aggiungere utenti, cambiare room in cui scrivere, ecc...
