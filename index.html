@@ -19,9 +19,8 @@
 
                 <div id="sidebarLeft" class="sidebar hidden">
                     <h2 id="showName"></h2>
-                    <h4>Clienti connessi in chat:</h4>
-                    <select id="connectedClients" name="connectedClients">
-                    </select>
+                    <div id="roomList">
+                    </div>
                     <button onclick="createRoom()" id="createRoom">Crea nuova Room</button>
                 </div>
 
@@ -41,8 +40,10 @@
 
                 <div id="sidebarRight" class="sidebar hidden">
                     <h4 id="roomName"></h4>
-                    <select id="roomClients" name="roomClients">
+                    <select id="connectedClients" name="connectedClients">
                     </select>
+                    <div id="roomClients" name="roomClients">
+                    </div>
                 </div>
 
             </div>

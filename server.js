@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid'); // Utilizzato per generare codici univoci nelle room
 const http = require('http');
 const fs = require('fs');
 const port = 3000;
@@ -5,7 +6,6 @@ const ip = "127.0.0.1";
 const path = require("path");
 let numClienti = 0;
 const users = [];
-let createdRoomsNumber = 0;
 const rooms = [];
 
 //
@@ -84,14 +84,18 @@ io.sockets.on('connection',
             io.emit('stato', users); // Invio 
         });
 
-        socket.on('createRoom', function (roomName) {
-            createdRoomsNumber++;
-            rooms.push({ name: roomName, id: createdRoomsNumber, admin: socket.id, users: [socket.id], timeline: "Ecco a te la tua nuova Room!\n"});
-            console.log('è stata creata la room ' + createdRoomsNumber +' da ' + socket.id);
-        });
-
-        socket.on('addUserToRoom', function (user) {
-            
+        socket.on('createRoom', function (data) {
+            const recipientSocket = users.find(user => user.id === data.recipient);
+            const roomData = {
+                name: data.roomName,
+                id: uuidv4(),
+                admin: recipientSocket,
+                users: [recipientSocket],
+                timeline: "Ecco a te la tua nuova Room!\n"
+            }
+            rooms.push(roomData);
+            console.log('Room ' + roomData.id +' creata da client ' + socket.id);
+            io.to(recipientSocket.id).emit("newRoom", roomData);
         });
 
         // Creare le funzioni per aggiungere utenti, cambiare room in cui scrivere, ecc...

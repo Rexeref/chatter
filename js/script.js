@@ -10,7 +10,7 @@ socket.on("messaggio", function (data) {
     document.getElementById("chatArea").innerText += data + "\n";
 });
 
-socket.on("stato", function (data) {
+socket.on("stato", function (data) { // Aggiorna lo stato in tempo reale
     const connectedClients = document.getElementById("connectedClients");
     connectedClients.innerHTML = "";
 
@@ -20,6 +20,15 @@ socket.on("stato", function (data) {
         option.value = client.id;
         connectedClients.add(option);
     });
+});
+
+socket.on("newRoom", function (roomData) {
+    console.log("Aggiunta di una room");
+    // Creo il bottone collegato alla room
+    const newBt = document.createElement("button");
+    newBt.innerHTML = roomData.name;
+    newBt.onclick = "openRoom(" + roomData.id + ")";
+    document.getElementById("roomList").add(newBt);
 });
 
 function login() {
@@ -33,8 +42,13 @@ function login() {
 }
 
 function createRoom() {
+    const selectedClient = document.getElementById("connectedClients").value;
     const chatRoomName = "La Chatroom di " + document.getElementById("Nickname").value;
-    socket.emit('createRoom', chatRoomName);
+    const data = {
+        recipient: selectedClient,
+        roomName: chatRoomName
+    }
+    socket.emit('createRoom', data);
 }
 
 function sendMessage() {

@@ -98,6 +98,11 @@ button:hover {
     margin-top: 100%;
 }
 
+#roomList {
+    overflow-y: scroll;
+    overflow-x: auto;
+}
+
 footer{
     text-align: center;
 }
