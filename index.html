@@ -13,6 +13,7 @@
             </header> 
             <div class="chat-content">
                 <div class="sidebar">
+                    <h2 id="showName"></h2>
                     <h2>Clienti connessi in chat:</h2>
                     <select id="connectedClients" name="connectedClients"></select>
                 </div>
@@ -20,9 +21,10 @@
                     <div class="chat-area" id="chatArea" disabled></div>
                     <div class="input-section">
                         <input type="text" id="Nickname" name="Nickname" placeholder="Nickname">
-                        <input type="text" id="message" name="message" placeholder="Messaggio">
-                        <button onclick="sendMessage()">Invia</button>
-                        <button onclick="endChat()">Fine</button>
+                        <button onclick="login()" id="login">Login</button>
+                        <button onclick="endChat()" id="logout" hidden>Logout</button>
+                        <input type="text" id="message" name="message" placeholder="Messaggio" hidden>
+                        <button onclick="sendMessage()" id="sendMessage" hidden>Invia</button>
                     </div>
                 </div>
             </div>

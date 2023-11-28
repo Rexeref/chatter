@@ -22,6 +22,16 @@ socket.on("stato", function (data) {
     });
 });
 
+function login() {
+    document.getElementById("Nickname").hidden = true;
+    document.getElementById("login").hidden = true;
+    document.getElementById("logout").hidden = false;
+    document.getElementById("message").hidden = false;
+    document.getElementById("sendMessage").hidden = false;
+    document.getElementById("showName").innerHTML = "Hey " + document.getElementById("Nickname").value + "!";
+    document.getElementById("showName").hidden = false;
+}
+
 function sendMessage() {
     const message = document.getElementById("message").value;
     const nickname = document.getElementById("Nickname").value;
@@ -52,6 +62,12 @@ function sendMessage() {
 
 function endChat() {
     socket.disconnect();
+    document.getElementById("Nickname").hidden = false;
+    document.getElementById("login").hidden = false;
+    document.getElementById("logout").hidden = true;
+    document.getElementById("message").hidden = true;
+    document.getElementById("sendMessage").hidden = true;
+    document.getElementById("showName").hidden = true;
     document.getElementById("connectedClients").innerHTML = "";
     document.getElementById("message").value = "";
     document.getElementById("chatArea").innerText = "";
