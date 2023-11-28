@@ -23,13 +23,16 @@ socket.on("stato", function (data) {
 });
 
 function login() {
+    let nameUser = document.getElementById("Nickname").value;
     document.getElementById("Nickname").hidden = true;
     document.getElementById("login").hidden = true;
     document.getElementById("logout").hidden = false;
     document.getElementById("message").hidden = false;
     document.getElementById("sendMessage").hidden = false;
-    document.getElementById("showName").innerHTML = "Hey " + document.getElementById("Nickname").value + "!";
     document.getElementById("showName").hidden = false;
+    document.getElementById("showName").innerHTML = "Hey " + nameUser + "!";
+    socket.emit('join', nameUser);
+    console.log(socket);
 }
 
 function sendMessage() {
