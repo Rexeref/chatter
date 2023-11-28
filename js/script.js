@@ -44,12 +44,7 @@ function login() {
 }
 
 function createRoom() {
-    const selectedClient = document.getElementById("connectedClients").value;
-    const chatRoomName = "La Chatroom di " + document.getElementById("Nickname").value;
-    const data = {
-        recipient: selectedClient,
-        roomName: chatRoomName
-    }
+    const data = "La Chatroom di " + document.getElementById("Nickname").value;
     socket.emit('createRoom', data);
 }
 
