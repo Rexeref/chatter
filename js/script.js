@@ -93,13 +93,18 @@ function leaveRoom(){
     activeRoom = null;
 }
 
+function addUserToRoom(){
+    const data = {
+        selectedClient: document.getElementById("connectedClients").value,
+        roomId: activeRoom
+    }
+    socket.emit('addUserToRoom', data);
+}
+
 // manda un messaggio al server che viene gestito lì
 function sendMessage() {
     const message = document.getElementById("message").value;
     const nickname = document.getElementById("Nickname").value;
-    const selectedClient = document.getElementById("connectedClients").value;
-
-    // Errori vari in caso di mancata selezione di qualcosa
     
     if (activeRoom == null) {
         alert("Entra in una room!");
