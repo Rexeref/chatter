@@ -42,9 +42,9 @@ socket.on("getRoomData", function (roomData) {
         console.log("Ricevuti i dati della chatroom " + roomData.id);
         document.getElementById("chatArea").innerText = roomData.timeline;
         document.getElementById("roomName").innerText = roomData.name;
-        document.getElementById("roomClients").innerText = "Admin: " + roomData.admin.name;
+        document.getElementById("roomClients").innerText = "Lista Utenti:";
         roomData.users.forEach(user => {
-            document.getElementById("roomClients").innerText += "\n - " + user.name;
+            document.getElementById("roomClients").innerText += "\n - " + user.nickname;
         });
         document.getElementById("sidebarRight").classList.remove("hidden");
     }
