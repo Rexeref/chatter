@@ -23,7 +23,7 @@ socket.on("lista", function (data) {
         const option = document.createElement("option");
         option.text = client.nickname;
         option.value = client.id;
-        connectedClients.add(option);
+            connectedClients.add(option);
     });
 });
 
@@ -32,6 +32,7 @@ socket.on("newRoom", function (roomData) {
     //console.log("Aggiunta di una room");
     const newBt = document.createElement("button");
     newBt.innerHTML = roomData.name;
+    newBt.id = roomData.id;
     newBt.setAttribute("onclick", "openRoom('" + roomData.id + "')");
     document.getElementById("roomList").appendChild(newBt);
 });
@@ -39,13 +40,16 @@ socket.on("newRoom", function (roomData) {
 // Riceve e formatta i dati di una data room sulla pagina solo se è la room selezionata dall'utente
 socket.on("getRoomData", function (roomData) {
     if(activeRoom === roomData.id){
-        console.log("Ricevuti i dati della chatroom " + roomData.id);
-        document.getElementById("chatArea").innerText = roomData.timeline;
+        //console.log("Ricevuti i dati della chatroom " + roomData.id);
+        let elem = document.getElementById("chatArea");
+        elem.innerText = roomData.timeline;
+        elem.scrollTop = elem.scrollHeight;
         document.getElementById("roomName").innerText = roomData.name;
-        document.getElementById("roomClients").innerText = "Lista Utenti:";
+        document.getElementById("roomClients").innerHTML = "<h5>Lista Utenti:</h5><ul>";
         roomData.users.forEach(user => {
-            document.getElementById("roomClients").innerText += "\n - " + user.nickname;
+            document.getElementById("roomClients").innerHTML += "\n<li>" + user.nickname + "</li>";
         });
+        document.getElementById("roomClients").innerHTML += "</ul>";
         document.getElementById("sidebarRight").classList.remove("hidden");
     }
 });
@@ -79,13 +83,28 @@ function openRoom(roomId){
     socket.emit('getRoomData', roomId);
 }
 
+// Chiede al server di togliere il proprio utente dalla lista utenti della room e poi cancella il bottone
+function leaveRoom(){
+    document.getElementById("sidebarRight").classList.add("hidden");
+    document.getElementById("message").value = "";
+    document.getElementById("chatArea").innerText = "";
+    document.getElementById(activeRoom).remove();
+    socket.emit('removeMeFromRoom', activeRoom);
+    activeRoom = null;
+}
+
+function addUserToRoom(){
+    const data = {
+        selectedClient: document.getElementById("connectedClients").value,
+        roomId: activeRoom
+    }
+    socket.emit('addUserToRoom', data);
+}
+
 // manda un messaggio al server che viene gestito lì
 function sendMessage() {
     const message = document.getElementById("message").value;
     const nickname = document.getElementById("Nickname").value;
-    const selectedClient = document.getElementById("connectedClients").value;
-
-    // Errori vari in caso di mancata selezione di qualcosa
     
     if (activeRoom == null) {
         alert("Entra in una room!");
@@ -99,24 +118,16 @@ function sendMessage() {
 
     const data = {
         sender: nickname,
-        recipient: selectedClient,
-        message: message
+        message: message,
+        room: activeRoom
     };
 
     socket.emit("privateMessage", data);
-    document.getElementById("chatArea").innerText += "\n" + nickname + ": " + message;
     document.getElementById("message").value = "";
 }
 
 // Chiude la connessione e normalizza l'aspetto
 function endChat() {
     socket.disconnect();
-    document.getElementById("main-chat").classList.add("hidden");
-    document.getElementById("sidebarLeft").classList.add("hidden");
-    document.getElementById("sidebarRight").classList.add("hidden");
-    document.getElementById("login-div").classList.remove("hidden");
-    document.getElementById("connectedClients").innerHTML = "";
-    document.getElementById("message").value = "";
-    document.getElementById("chatArea").innerText = "";
-    document.getElementById("Nickname").value = "";
+    window.location.reload();
 }

@@ -113,8 +113,9 @@ button:hover {
     overflow-y: scroll;
     display: flex;
     flex-flow: column;
-    height: 300px;
-    max-height: 300px;
+    width: 100%;
+    height: 200px;
+    max-height: 200px;
 }
 
 #roomList button {
@@ -124,6 +125,11 @@ button:hover {
 #createRoom {
     margin-left: 10%;
     width: 80%;
+}
+
+#editRoom {
+    position: absolute;
+    margin-bottom: 0;
 }
 
 footer{

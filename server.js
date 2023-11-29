@@ -11,6 +11,8 @@ const rooms = [];
 //
 // http request handler
 
+// TEST BRANCH
+
 function requestHandler(req, res) {
     let filePath = '.' + req.url;
 
@@ -91,7 +93,7 @@ io.sockets.on('connection',
                 name: randID.substring(5, 10), // qui ci va data, momentaneamente faccio così in modo da avere nomi diversi
                 id: randID, // qui avviene la generazione del codice univoco
                 users: [users.find(user => user.id == socket.id)],
-                timeline: "Benvenuto nella tua nuova Room!"
+                timeline: ("Benvenuto nella tua nuova Room " + randID.substring(5, 10) + "!")
             }
             rooms.push(roomData);
             console.log(socket.id + '    ha creato room            ' + roomData.id);
@@ -111,15 +113,21 @@ io.sockets.on('connection',
         // salvare i dati delle chat (stringhe) nell'apposita variabile della room "timeline"
         // per vedere com'é strutturata la room vai a riga 89
 
-        //WIP: C'è scritto quel che deve fare nel commento dentro
+        // Ricevuto un messaggio aggiorna la room selezionata
         socket.on('privateMessage', function (data) {
-            // Fare in modo che da qui il server inserisca nella chatroom corretta
-            // il messaggio e poi invii i dati a tutti i client che fanno parte di
-            // quella chatroom (lista users dentro chatroom)
-            const recipientSocket = users.find(user => user.id === data.recipient);
-            if (recipientSocket) {
-                io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
-            }
+            rooms[rooms.findIndex(room => room.id === data.room)].timeline += "\n" + data.sender + ": " + data.message;
+            rooms[rooms.findIndex(room => room.id === data.room)].users.forEach(user => {
+                io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === data.room)]);
+            });
+        });
+
+        // rimuove l'utente richiedente dalla lista di una room
+        // è possibile espandere questa funzione facendo in modo
+        // che se la room è vuota si liberi lo spazio cancellandola
+        socket.on('removeMeFromRoom', function (roomId) {
+            let roomIndex = rooms.findIndex(room => room.id === roomId);
+            rooms[roomIndex].users.splice(rooms[roomIndex].users.findIndex(user => user.id === socket.id), 1);
+            console.log(socket.id + "    è stato rimosso da        " + rooms[roomIndex].id);
         });
 
         // elimina l'utente che ha richiesto la disconnessione dalla lista degli utenti
