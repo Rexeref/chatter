@@ -121,6 +121,17 @@ io.sockets.on('connection',
             });
         });
 
+        // Aggiunge un utente ad una room se non è già presente
+        socket.on('addUserToRoom', function (data){
+            if(!rooms[rooms.findIndex(room => room.id === data.room)].users.includes(users.find(user => user.id === data.selectedClient))){
+                rooms[rooms.findIndex(room => room.id === data.room)].users.push(users.find(user => user.id === data.selectedClient));
+                io.to(data.selectedClient).emit("newRoom", rooms[rooms.findIndex(room => room.id === data.room)]);
+                rooms[rooms.findIndex(room => room.id === data.room)].users.forEach(user => {
+                    io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === data.room)]);
+                });
+            }
+        });
+
         // rimuove l'utente richiedente dalla lista di una room
         // è possibile espandere questa funzione facendo in modo
         // che se la room è vuota si liberi lo spazio cancellandola

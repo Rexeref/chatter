@@ -96,7 +96,7 @@ function leaveRoom(){
 function addUserToRoom(){
     const data = {
         selectedClient: document.getElementById("connectedClients").value,
-        roomId: activeRoom
+        room: activeRoom
     }
     socket.emit('addUserToRoom', data);
 }
