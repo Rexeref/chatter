@@ -90,7 +90,6 @@ io.sockets.on('connection',
             const roomData = {
                 name: randID.substring(5, 10), // qui ci va data, momentaneamente faccio così in modo da avere nomi diversi
                 id: randID, // qui avviene la generazione del codice univoco
-                admin: users.find(user => user.id == socket.id),
                 users: [users.find(user => user.id == socket.id)],
                 timeline: "Ecco a te la tua nuova Room!"
             }
