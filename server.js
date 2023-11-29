@@ -40,10 +40,10 @@ function requestHandler(req, res) {
         case '.gif':
             contentType = 'image/gif';
             break;
-    }    
+    }
 
     fs.readFile(filePath, function (error, content) {
-    
+
         if (error) {
             res.writeHead(404);
         }
@@ -74,7 +74,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.sockets.on('connection', 
+io.sockets.on('connection',
     function (socket) {
         // linka l'id del socket al nickname dato
         socket.on('join', function (nickname) { // socket.on( metodo, function (datiRecuperati) {codice in caso;});
@@ -102,7 +102,7 @@ io.sockets.on('connection',
         });
 
         // invia i dati della room a chi li richiede dato l'id
-        socket.on('getRoomData', function (roomId){
+        socket.on('getRoomData', function (roomId) {
             const myRoom = rooms.find(room => room.id === roomId);
             console.log(socket.id + "    chiesto dati room         " + myRoom.id);
             io.to(socket.id).emit("getRoomData", myRoom);
@@ -122,9 +122,10 @@ io.sockets.on('connection',
         });
 
         // Aggiunge un utente ad una room se non è già presente
-        socket.on('addUserToRoom', function (data){
-            if(!rooms[rooms.findIndex(room => room.id === data.room)].users.includes(users.find(user => user.id === data.selectedClient))){
+        socket.on('addUserToRoom', function (data) {
+            if (!rooms[rooms.findIndex(room => room.id === data.room)].users.includes(users.find(user => user.id === data.selectedClient))) {
                 rooms[rooms.findIndex(room => room.id === data.room)].users.push(users.find(user => user.id === data.selectedClient));
+                rooms[rooms.findIndex(room => room.id === data.room)].timeline += "\n >>> L'utente " + users.find(user => user.id === data.selectedClient).nickname + " è entrato nella chatroom";
                 io.to(data.selectedClient).emit("newRoom", rooms[rooms.findIndex(room => room.id === data.room)]);
                 rooms[rooms.findIndex(room => room.id === data.room)].users.forEach(user => {
                     io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === data.room)]);
@@ -138,7 +139,19 @@ io.sockets.on('connection',
         socket.on('removeMeFromRoom', function (roomId) {
             let roomIndex = rooms.findIndex(room => room.id === roomId);
             rooms[roomIndex].users.splice(rooms[roomIndex].users.findIndex(user => user.id === socket.id), 1);
-            console.log(socket.id + "    è stato rimosso da        " + rooms[roomIndex].id);
+            rooms[roomIndex].timeline += "\n >>> L'utente " + users.find(user => user.id === socket.id).name + " è uscito dalla chatroom";
+            rooms[rooms.findIndex(room => room.id === roomId)].users.forEach(user => {
+                io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === roomId)]);
+            });
+        });
+
+        socket.on('changeRoomName', function (data) {
+            let roomIndex = rooms.findIndex(room => room.id === data.room);
+            rooms[roomIndex].name = data.name;
+            rooms[roomIndex].timeline += '\n >>> La chatroom ha cambiato nome in "' + data.name + '"';
+            rooms[roomIndex].users.forEach(user => {
+                io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === data.room)]);
+            });
         });
 
         // elimina l'utente che ha richiesto la disconnessione dalla lista degli utenti

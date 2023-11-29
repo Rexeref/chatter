@@ -50,6 +50,7 @@ socket.on("getRoomData", function (roomData) {
             document.getElementById("roomClients").innerHTML += "\n<li>" + user.nickname + "</li>";
         });
         document.getElementById("roomClients").innerHTML += "</ul>";
+        document.getElementById(roomData.id).innerHTML = roomData.name;
         document.getElementById("sidebarRight").classList.remove("hidden");
     }
 });
@@ -99,6 +100,14 @@ function addUserToRoom(){
         room: activeRoom
     }
     socket.emit('addUserToRoom', data);
+}
+
+function changeRoomName() {
+    const data = {
+        room: activeRoom,
+        name: document.getElementById("newRoomName").value
+    }
+    socket.emit('changeRoomName', data);
 }
 
 // manda un messaggio al server che viene gestito lì
