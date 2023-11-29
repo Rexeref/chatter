@@ -113,8 +113,8 @@ button:hover {
     overflow-y: scroll;
     display: flex;
     flex-flow: column;
-    height: 300px;
-    max-height: 300px;
+    height: 200px;
+    max-height: 200px;
 }
 
 #roomList button {
