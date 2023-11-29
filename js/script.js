@@ -32,6 +32,7 @@ socket.on("newRoom", function (roomData) {
     //console.log("Aggiunta di una room");
     const newBt = document.createElement("button");
     newBt.innerHTML = roomData.name;
+    newBt.id = roomData.id;
     newBt.setAttribute("onclick", "openRoom('" + roomData.id + "')");
     document.getElementById("roomList").appendChild(newBt);
 });
@@ -80,6 +81,16 @@ function createRoom() {
 function openRoom(roomId){
     activeRoom = roomId;
     socket.emit('getRoomData', roomId);
+}
+
+// Chiede al server di togliere il proprio utente dalla lista utenti della room e poi cancella il bottone
+function leaveRoom(){
+    document.getElementById("sidebarRight").classList.add("hidden");
+    document.getElementById("message").value = "";
+    document.getElementById("chatArea").innerText = "";
+    document.getElementById(activeRoom).remove();
+    socket.emit('removeMeFromRoom', activeRoom);
+    activeRoom = null;
 }
 
 // manda un messaggio al server che viene gestito lì

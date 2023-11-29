@@ -121,6 +121,15 @@ io.sockets.on('connection',
             });
         });
 
+        // rimuove l'utente richiedente dalla lista di una room
+        // è possibile espandere questa funzione facendo in modo
+        // che se la room è vuota si liberi lo spazio cancellandola
+        socket.on('removeMeFromRoom', function (roomId) {
+            let roomIndex = rooms.findIndex(room => room.id === roomId);
+            rooms[roomIndex].users.splice(rooms[roomIndex].users.findIndex(user => user.id === socket.id), 1);
+            console.log(socket.id + "    è stato rimosso da        " + rooms[roomIndex].id);
+        });
+
         // elimina l'utente che ha richiesto la disconnessione dalla lista degli utenti
         socket.on('disconnect', function () {
             numClienti--;
