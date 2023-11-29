@@ -93,7 +93,7 @@ io.sockets.on('connection',
                 name: randID.substring(5, 10), // qui ci va data, momentaneamente faccio così in modo da avere nomi diversi
                 id: randID, // qui avviene la generazione del codice univoco
                 users: [users.find(user => user.id == socket.id)],
-                timeline: "Benvenuto nella tua nuova Room!"
+                timeline: ("Benvenuto nella tua nuova Room " + randID.substring(5, 10) + "!")
             }
             rooms.push(roomData);
             console.log(socket.id + '    ha creato room            ' + roomData.id);
@@ -113,15 +113,15 @@ io.sockets.on('connection',
         // salvare i dati delle chat (stringhe) nell'apposita variabile della room "timeline"
         // per vedere com'é strutturata la room vai a riga 89
 
-        //WIP: C'è scritto quel che deve fare nel commento dentro
+        // Ricevuto un messaggio aggiorna la room selezionata
+        // FIXME - Cristo, va rifatto
         socket.on('privateMessage', function (data) {
-            // Fare in modo che da qui il server inserisca nella chatroom corretta
-            // il messaggio e poi invii i dati a tutti i client che fanno parte di
-            // quella chatroom (lista users dentro chatroom)
-            const recipientSocket = users.find(user => user.id === data.recipient);
-            if (recipientSocket) {
-                io.to(recipientSocket.id).emit('messaggio', data.sender + ": " + data.message);
-            }
+            const activeRoom = rooms.find(room => room == data.room);
+            console.log(data.room.name);
+            rooms[rooms.findIndex(room => room == data.room)].timeline += "\n" + data.sender + ": " + data.message;
+            activeRoom.users.forEach(user => {
+                io.to(user.id).emit('getRoomData', activeRoom);
+            });
         });
 
         // elimina l'utente che ha richiesto la disconnessione dalla lista degli utenti

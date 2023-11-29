@@ -39,8 +39,10 @@ socket.on("newRoom", function (roomData) {
 // Riceve e formatta i dati di una data room sulla pagina solo se è la room selezionata dall'utente
 socket.on("getRoomData", function (roomData) {
     if(activeRoom === roomData.id){
-        console.log("Ricevuti i dati della chatroom " + roomData.id);
-        document.getElementById("chatArea").innerText = roomData.timeline;
+        //console.log("Ricevuti i dati della chatroom " + roomData.id);
+        let elem = document.getElementById("chatArea");
+        elem.innerText = roomData.timeline;
+        elem.scrollTop = elem.scrollHeight;
         document.getElementById("roomName").innerText = roomData.name;
         document.getElementById("roomClients").innerText = "Lista Utenti:";
         roomData.users.forEach(user => {
@@ -99,12 +101,11 @@ function sendMessage() {
 
     const data = {
         sender: nickname,
-        recipient: selectedClient,
-        message: message
+        message: message,
+        room: activeRoom
     };
 
     socket.emit("privateMessage", data);
-    document.getElementById("chatArea").innerText += "\n" + nickname + ": " + message;
     document.getElementById("message").value = "";
 }
 

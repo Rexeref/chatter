@@ -126,6 +126,11 @@ button:hover {
     width: 80%;
 }
 
+#editRoom {
+    position: absolute;
+    margin-bottom: 0;
+}
+
 footer{
     text-align: center;
 }
