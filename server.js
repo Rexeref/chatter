@@ -114,13 +114,10 @@ io.sockets.on('connection',
         // per vedere com'é strutturata la room vai a riga 89
 
         // Ricevuto un messaggio aggiorna la room selezionata
-        // FIXME - Cristo, va rifatto
         socket.on('privateMessage', function (data) {
-            const activeRoom = rooms.find(room => room == data.room);
-            console.log(data.room.name);
-            rooms[rooms.findIndex(room => room == data.room)].timeline += "\n" + data.sender + ": " + data.message;
-            activeRoom.users.forEach(user => {
-                io.to(user.id).emit('getRoomData', activeRoom);
+            rooms[rooms.findIndex(room => room.id === data.room)].timeline += "\n" + data.sender + ": " + data.message;
+            rooms[rooms.findIndex(room => room.id === data.room)].users.forEach(user => {
+                io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === data.room)]);
             });
         });
 

@@ -23,7 +23,7 @@ socket.on("lista", function (data) {
         const option = document.createElement("option");
         option.text = client.nickname;
         option.value = client.id;
-        connectedClients.add(option);
+            connectedClients.add(option);
     });
 });
 
@@ -44,10 +44,11 @@ socket.on("getRoomData", function (roomData) {
         elem.innerText = roomData.timeline;
         elem.scrollTop = elem.scrollHeight;
         document.getElementById("roomName").innerText = roomData.name;
-        document.getElementById("roomClients").innerText = "Lista Utenti:";
+        document.getElementById("roomClients").innerHTML = "<h5>Lista Utenti:</h5><ul>";
         roomData.users.forEach(user => {
-            document.getElementById("roomClients").innerText += "\n - " + user.nickname;
+            document.getElementById("roomClients").innerHTML += "\n<li>" + user.nickname + "</li>";
         });
+        document.getElementById("roomClients").innerHTML += "</ul>";
         document.getElementById("sidebarRight").classList.remove("hidden");
     }
 });
@@ -112,12 +113,5 @@ function sendMessage() {
 // Chiude la connessione e normalizza l'aspetto
 function endChat() {
     socket.disconnect();
-    document.getElementById("main-chat").classList.add("hidden");
-    document.getElementById("sidebarLeft").classList.add("hidden");
-    document.getElementById("sidebarRight").classList.add("hidden");
-    document.getElementById("login-div").classList.remove("hidden");
-    document.getElementById("connectedClients").innerHTML = "";
-    document.getElementById("message").value = "";
-    document.getElementById("chatArea").innerText = "";
-    document.getElementById("Nickname").value = "";
+    window.location.reload();
 }

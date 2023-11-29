@@ -113,6 +113,7 @@ button:hover {
     overflow-y: scroll;
     display: flex;
     flex-flow: column;
+    width: 100%;
     height: 200px;
     max-height: 200px;
 }
