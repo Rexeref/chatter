@@ -12,7 +12,7 @@
         <div class="chat-container">
 
             <header>
-                <h1>Chatter</h1>
+                <h1>Chatter&nbsp;<img src="/img/logoChatter.png" alt="logo" height="25px;" id="logo"></h1> 
             </header>
             
             <div class="chat-content">
@@ -34,20 +34,19 @@
                     <div class="chat-area" id="chatArea" disabled></div>
                     <div class="input-section">
                         <button onclick="endChat()" id="logout">Logout</button>
-                        <input type="text" id="message" name="message" placeholder="Messaggio">
-                        <button onclick="sendMessage()" id="sendMessage">Invia</button>
+                        <input type="text" id="message" name="message" placeholder="Messaggio" onkeypress="sendMessageKey(event)">
+                        <button onclick="sendMessage()" id="sendMessage"><img src="/img/sendLogo.png" alt="send" height="25px;"></button>
                     </div>
                 </div>
 
                 <div id="sidebarRight" class="sidebar hidden">
                     <h4 id="roomName"></h4>
-                    <div id="roomClients" name="roomClients">
-                    </div>
+                    <div id="roomClients" name="roomClients"></div>
                     <div id="editRoom">
                         <input type="text" id="newRoomName" name="newRoomName" placeholder="Nuovo nome per la room">
                         <button onclick="changeRoomName()">Cambia nome room</button>
                         <select id="connectedClients" name="connectedClients"></select>
-                        <button onclick="addUserToRoom()">Aggiungi utente</button>
+                        <button onclick="addUserToRoom()">Aggiungi utente</button> 
                         <button onclick="leaveRoom()">Esci</button>
                     </div>
                 </div>

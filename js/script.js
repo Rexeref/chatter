@@ -140,3 +140,10 @@ function endChat() {
     socket.disconnect();
     window.location.reload();
 }
+
+function sendMessageKey(event) {
+    // verifica se il tasto premuto è il tasto "Invio" (codice 13)
+    if (event.keyCode === 13) {
+        document.getElementById('sendMessage').click();
+    }
+}

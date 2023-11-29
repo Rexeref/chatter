@@ -139,7 +139,7 @@ io.sockets.on('connection',
         socket.on('removeMeFromRoom', function (roomId) {
             let roomIndex = rooms.findIndex(room => room.id === roomId);
             rooms[roomIndex].users.splice(rooms[roomIndex].users.findIndex(user => user.id === socket.id), 1);
-            rooms[roomIndex].timeline += "\n >>> L'utente " + users.find(user => user.id === socket.id).name + " è uscito dalla chatroom";
+            rooms[roomIndex].timeline += "\n >>> L'utente " + users.find(user => user.id === socket.id).nickname + " è uscito dalla chatroom";
             rooms[rooms.findIndex(room => room.id === roomId)].users.forEach(user => {
                 io.to(user.id).emit('getRoomData', rooms[rooms.findIndex(room => room.id === roomId)]);
             });

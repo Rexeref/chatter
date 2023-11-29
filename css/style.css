@@ -54,7 +54,10 @@ header {
 
 .sidebar {
     flex: 1;
+    flex-direction: column;
+    height: 100%;
     padding: 15px;
+    position: relative;
 }
 
 .sidebar h2 {
@@ -74,6 +77,13 @@ header {
     padding: 10px;
     overflow-y: scroll;
     border-bottom: 1px solid #ddd;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 .input-section {
@@ -127,9 +137,24 @@ button:hover {
     width: 80%;
 }
 
+#roomClients {
+    height: 150px;
+    overflow-y: scroll;
+}
+
 #editRoom {
-    position: absolute;
+    height: 150px;
+    width: 100%;
+    overflow-y: auto;
+    margin-top: auto;
     margin-bottom: 0;
+}
+
+#editRoom > * {
+    display: block;
+    margin-top: 1%;
+    margin-left: 5%;
+    width: 90%;
 }
 
 footer{
