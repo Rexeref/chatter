@@ -1,10 +1,26 @@
-
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3498db83; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3498db; 
 }
 
 .full-screen-container {
